@@ -44,4 +44,39 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)                   // response body will contain a JSON of the created book
 }
 
-func DeleteBook(w h)
+func DeleteBook(w http.ResponseWriter, r *http.Response) {
+	vars := mux.vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
+	if err != nil {
+		fmt.Println("error while parsing")
+	}
+	book := models.DeleteBook(ID)
+	res, _ := json.Marshal(book)
+	w.Header().Set("Content-Type", "pkglication/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func UpdateBook(w http.ResponseWriter, r *http.Request) {
+	var updateBook = &models.Book{} //updatebook is a pointer variable that points to an empty instance of the Book struct
+	utils.ParseBody(r, updateBook)  //extract the JSON from the request and unmarshall it into the UpdateBook variable
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
+	if err != nil {
+		fmt.Println("error while parsing")
+	}
+
+	bookDetails, db := models.GetBookById(ID) //retrieve the book details from the database
+
+	if updateBook.Name != "" {
+		bookDetails.Name = updateBook.Name
+	}
+	if updateBook.Author != "" {
+		bookDetails.Author = updateBook.Author
+	}
+	if updateBook.Publication != "" {
+		bookDetails.Publication = updateBook.Publication
+	}
+}
