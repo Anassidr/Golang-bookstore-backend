@@ -1,17 +1,31 @@
-package main
+package controllers
 
 import (
-	"log"
+	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
 
-	_ "gihtub.com/jinzhu/gorm/dialects/mysql"
-	"github.com/anassidr/go-bookstore/pkg/routes"
+	"github.com/anassidr/go-bookstore/pkg/models"
 	"github.com/gorilla/mux"
 )
 
-func main() {
-	r := mux.NewRouter()
-	routes.RegisterBookStoreRoutes(r)
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe("localhost:9010", r))
+var NewBook models.Book
+
+func GetBook(w http.ResponseWriter, r *http.Request) {
+	newBooks := models.GetAllBooks()
+	res, _ := json.Marshal(newBooks)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func GetBookById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0) //convert string to value (string to conv, base int, bitSize)
+	if err != nil {
+		fmt.Println("error while parsing")
+	}
+	bookDetails, _ := models.GetBookById(ID)
 }
