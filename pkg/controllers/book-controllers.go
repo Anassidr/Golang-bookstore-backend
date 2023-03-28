@@ -44,8 +44,8 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)                   // response body will contain a JSON of the created book
 }
 
-func DeleteBook(w http.ResponseWriter, r *http.Response) {
-	vars := mux.vars(r)
+func DeleteBook(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
 	bookId := vars["bookId"]
 	ID, err := strconv.ParseInt(bookId, 0, 0)
 	if err != nil {
