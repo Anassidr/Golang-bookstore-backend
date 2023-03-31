@@ -2,17 +2,20 @@ package config
 
 import (
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var db *gorm.DB
 
 func Connect() {
-	d, err := gorm.Open("mysql", "admin:admin@tcp(localhost:9010)/") //establish connection to MySQL database
+	connectionString := "host=localhost port=5432 user=postgres dbname=go-bookstore sslmode=disable"
+	db, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		panic(err) // built in function in Go. Stop executing and print error message to the console
+		return
 	}
-	db = d
+
+	defer db.Close()
 }
 
 func GetDB() *gorm.DB {
