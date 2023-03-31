@@ -5,16 +5,17 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var db *gorm.DB
+var (
+	db *gorm.DB
+)
 
 func Connect() {
 	connectionString := "host=localhost port=5432 user=postgres dbname=go-bookstore sslmode=disable"
-	db, err := gorm.Open("postgres", connectionString)
+	d, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		panic(err) // built in function in Go. Stop executing and print error message to the console
 	}
-
-	defer db.Close()
+	db = d
 }
 
 func GetDB() *gorm.DB {
