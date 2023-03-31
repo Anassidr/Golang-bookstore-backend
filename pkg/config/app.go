@@ -12,7 +12,6 @@ func Connect() {
 	db, err := gorm.Open("postgres", connectionString)
 	if err != nil {
 		panic(err) // built in function in Go. Stop executing and print error message to the console
-		return
 	}
 
 	defer db.Close()

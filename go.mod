@@ -10,4 +10,5 @@ require (
 require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/lib/pq v1.1.1 // indirect
 )
